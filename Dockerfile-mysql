@@ -1,0 +1,17 @@
+# 使用官方的 MySQL 镜像作为基础镜像
+FROM mysql:latest
+
+# 设置 MySQL 环境变量
+ENV MYSQL_ROOT_PASSWORD=root
+#ENV MYSQL_DATABASE=my_database
+#ENV MYSQL_USER=my_user
+#ENV MYSQL_PASSWORD=my_password
+
+# 复制自定义 MySQL 配置文件到容器中
+#COPY ./my.cnf /etc/mysql/conf.d/my.cnf
+
+# 如果有初始化 SQL 脚本，可以将其复制到容器中并在启动时执行
+# COPY ./init.sql /docker-entrypoint-initdb.d/
+
+# 暴露 MySQL 端口（默认是3306）
+#EXPOSE 3306

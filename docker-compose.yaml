@@ -1,0 +1,59 @@
+version: '3'
+
+services:
+  php-fpm:
+    build:
+      context: .
+      dockerfile: Dockerfile-php
+    volumes:
+      - /www/wwwroot:/var/www
+    networks:
+      - app-network
+
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - /www/wwwroot:/var/www
+      - /www/docker/nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - php-fpm
+    networks:
+      - app-network
+    links:
+      - php-fpm
+
+  mysql_1:
+    build:
+      context: .
+      dockerfile: Dockerfile-mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      - /www/data/mysql-1:/var/lib/mysql
+      - /www/docker/mysql/mysql-1/conf.d:/etc/mysql/conf.d
+    networks:
+      - app-network
+  
+  # 从库，不需要用主从同步可以不加这块
+  mysql_2:
+    build:
+      context: .
+      dockerfile: Dockerfile-mysql
+    ports:
+      - "3307:3306"
+    volumes:
+      - /www/data/mysql-2:/var/lib/mysql
+      - /www/docker/mysql/mysql-2/conf.d:/etc/mysql/conf.d
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+
+

@@ -1,0 +1,23 @@
+# 使用官方的 PHP 基础镜像
+FROM php:7.4-fpm
+
+# 设置工作目录
+WORKDIR /var/www
+
+# 安装 PHP 扩展（根据需要安装其他扩展）
+RUN docker-php-ext-install mysqli pdo_mysql
+
+# 复制应用程序代码到工作目录
+# COPY . /var/www/html
+
+# 将你的自定义配置文件复制到容器中
+# COPY php.ini /usr/local/etc/php/conf.d/custom.ini
+
+# 设置 PHP-FPM 的配置文件
+# COPY php-fpm.conf /usr/local/etc/php-fpm.conf
+
+# 暴露 PHP-FPM 默认监听的端口
+#EXPOSE 9000
+
+# 设置容器启动时运行的命令
+#CMD ["php-fpm"]
