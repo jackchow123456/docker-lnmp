@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile-php
     volumes:
-      - /www/wwwroot:/var/www
+      - ${APP_CODE_PATH_HOST}:/var/www
     networks:
       - app-network
 
@@ -17,8 +17,8 @@ services:
     ports:
       - "80:80"
     volumes:
-      - /www/wwwroot:/var/www
-      - /www/docker/nginx/conf.d:/etc/nginx/conf.d
+      - ${APP_CODE_PATH_HOST}:/var/www
+      - ${APP_DOCKER_PATH_HOST}/nginx/conf.d:/etc/nginx/conf.d
     depends_on:
       - php-fpm
     networks:
@@ -26,7 +26,7 @@ services:
     links:
       - php-fpm
 
-  mysql_1:
+  mysql:
     build:
       context: .
       dockerfile: Dockerfile-mysql
@@ -34,22 +34,22 @@ services:
       - "3306:3306"
     volumes:
       - /www/data/mysql-1:/var/lib/mysql
-      - /www/docker/mysql/mysql-1/conf.d:/etc/mysql/conf.d
+      - ${APP_DOCKER_PATH_HOST}/mysql/mysql-1/conf.d:/etc/mysql/conf.d
     networks:
       - app-network
   
   # 从库，不需要用主从同步可以不加这块
-  mysql_2:
-    build:
-      context: .
-      dockerfile: Dockerfile-mysql
-    ports:
-      - "3307:3306"
-    volumes:
-      - /www/data/mysql-2:/var/lib/mysql
-      - /www/docker/mysql/mysql-2/conf.d:/etc/mysql/conf.d
-    networks:
-      - app-network
+#  mysql_2:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile-mysql
+#    ports:
+#      - "3307:3306"
+#    volumes:
+#      - /www/data/mysql-2:/var/lib/mysql
+#      - ${APP_DOCKER_PATH_HOST}/mysql/mysql-2/conf.d:/etc/mysql/conf.d
+#    networks:
+#      - app-network
 
 networks:
   app-network:

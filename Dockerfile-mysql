@@ -1,5 +1,5 @@
 # 使用官方的 MySQL 镜像作为基础镜像
-FROM mysql:latest
+FROM mysql:5.7
 
 # 设置 MySQL 环境变量
 ENV MYSQL_ROOT_PASSWORD=root
