@@ -1,3 +1,6 @@
 /html
 ./.idea/*
 .idea/
+mysql/
+redis/data/
+redis/log/

@@ -1,0 +1,5 @@
+# 使用官方的 REDIS 基础镜像
+FROM redis:7.0-alpine
+
+
+CMD [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
