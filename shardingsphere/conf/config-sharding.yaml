@@ -1,0 +1,25 @@
+schemaName: sharding_db
+
+dataSources:
+  ds_0:
+    url: jdbc:mysql://mysql:3306/oss-api
+    username: root
+    password: root
+    connectionTimeoutMilliseconds: 30000
+    idleTimeoutMilliseconds: 60000
+    maxLifetimeMilliseconds: 1800000
+    maxPoolSize: 50
+
+#rules:
+#  - !SHARDING
+#    tables:
+#      consolidated_data:
+#        actualDataNodes: ds_0.consolidated_data_$->{0..2}
+#        tableStrategy:
+#          inline:
+#            shardingColumn: channel
+#            algorithmExpression: consolidated_data_$->{channel % 3}
+#    defaultDatabaseStrategy:
+#      none:
+#    defaultTableStrategy:
+#      none:

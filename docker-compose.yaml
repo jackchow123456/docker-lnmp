@@ -12,6 +12,29 @@ services:
       - ${APP_CODE_PATH_HOST}:/var/www
     networks:
       - app-network
+    container_name: php
+
+#  php8.2-fpm:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile-php-8.2
+#    ports:
+#      - "9502:9502"
+#    volumes:
+#      - ${APP_CODE_PATH_HOST}:/var/www
+#    networks:
+#      - app-network
+#    container_name: php8.2
+
+  php8.3-fpm:
+    build:
+      context: .
+      dockerfile: Dockerfile-php-8.3
+    volumes:
+      - ${APP_CODE_PATH_HOST}:/var/www
+    networks:
+      - app-network
+    container_name: php8.3
 
   nginx:
     build:
@@ -24,10 +47,13 @@ services:
       - ${APP_DOCKER_PATH_HOST}/nginx/conf.d:/etc/nginx/conf.d
     depends_on:
       - php-fpm
+      - php8.3-fpm
     networks:
       - app-network
     links:
       - php-fpm
+      - php8.3-fpm
+    container_name: nginx
 
   mysql:
     build:
@@ -37,9 +63,10 @@ services:
       - "3306:3306"
     volumes:
       - ${APP_DOCKER_PATH_HOST}/mysql/mysql-1/data:/var/lib/mysql
-#      - ${APP_DOCKER_PATH_HOST}/mysql/mysql-1/conf.d:/etc/mysql/conf.d
+      - ${APP_DOCKER_PATH_HOST}/mysql/conf.d:/etc/mysql/conf.d
     networks:
       - app-network
+    container_name: mysql
 
   redis:
     build:
@@ -53,6 +80,21 @@ services:
       - ./redis/log:/usr/local/redis/log
     networks:
       - app-network
+    container_name: redis
+
+  shardingsphere:
+    build:
+      context: .
+      dockerfile: Dockerfile-shardingsphere
+    ports:
+      - "3310:3310"
+    volumes:
+      - /${APP_DOCKER_PATH_HOST}/shardingsphere/conf:/opt/shardingsphere-proxy/conf
+    networks:
+      - app-network
+    container_name: shardingsphere
+
+
   
   # 从库，不需要用主从同步可以不加这块
 #  mysql_2:

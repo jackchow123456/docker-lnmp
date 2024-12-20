@@ -8,7 +8,8 @@ ENV MYSQL_ROOT_PASSWORD=root
 #ENV MYSQL_PASSWORD=my_password
 
 # 复制自定义 MySQL 配置文件到容器中
-#COPY ./my.cnf /etc/mysql/conf.d/my.cnf
+COPY ./my.cnf /etc/mysql/conf.d/my.cnf
+
 
 # 如果有初始化 SQL 脚本，可以将其复制到容器中并在启动时执行
 # COPY ./init.sql /docker-entrypoint-initdb.d/
