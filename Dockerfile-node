@@ -1,0 +1,8 @@
+FROM node:latest
+
+# 设置工作目录
+WORKDIR /var/www
+
+EXPOSE 3000
+
+CMD ["sh", "-c", "tail -f /dev/null"]

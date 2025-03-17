@@ -1,4 +1,3 @@
-version: '3'
 
 services:
   php-fpm:
@@ -7,6 +6,7 @@ services:
       dockerfile: Dockerfile-php-new
     ports:
       - "9501:9501"
+      - "9508:9508"
       - "9510:9510"
     volumes:
       - ${APP_CODE_PATH_HOST}:/var/www
@@ -25,6 +25,7 @@ services:
 #    networks:
 #      - app-network
 #    container_name: php8.2
+  
 
   php8.3-fpm:
     build:
@@ -68,6 +69,19 @@ services:
       - app-network
     container_name: mysql
 
+  node:
+    build:
+      context: .
+      dockerfile: Dockerfile-node
+    ports:
+      - "3000:3000"
+      - "8000:8000"
+    volumes:
+      - ${APP_CODE_PATH_HOST}:/var/www
+    networks:
+      - app-network
+    container_name: node
+
   redis:
     build:
       context: .
@@ -82,21 +96,23 @@ services:
       - app-network
     container_name: redis
 
-  shardingsphere:
-    build:
-      context: .
-      dockerfile: Dockerfile-shardingsphere
-    ports:
-      - "3310:3310"
-    volumes:
-      - /${APP_DOCKER_PATH_HOST}/shardingsphere/conf:/opt/shardingsphere-proxy/conf
-    networks:
-      - app-network
-    container_name: shardingsphere
+#  shardingsphere:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile-shardingsphere
+#    ports:
+#      - "3310:3310"
+#      - "3309:3309"
+#    volumes:
+#      - /${APP_DOCKER_PATH_HOST}/shardingsphere/conf:/opt/shardingsphere-proxy/conf
+#    networks:
+#      - app-network
+#    container_name: shardingsphere
 
 
   
-  # 从库，不需要用主从同步可以不加这块
+#  从库，不需要用主从同步可以不加这块
+#
 #  mysql_2:
 #    build:
 #      context: .
@@ -112,6 +128,5 @@ services:
 networks:
   app-network:
     driver: bridge
-
 
 
