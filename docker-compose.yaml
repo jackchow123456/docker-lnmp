@@ -33,6 +33,8 @@ services:
       dockerfile: Dockerfile-php-8.3
     volumes:
       - ${APP_CODE_PATH_HOST}:/var/www
+      - ${APP_DOCKER_PATH_HOST}/php/8.3/php.ini://usr/local/etc/php/conf.d/custom.ini
+      - ${APP_DOCKER_PATH_HOST}/php/php-fpm.d/php-fpm.conf:/usr/local/etc/php-fpm.conf
     networks:
       - app-network
     container_name: php8.3

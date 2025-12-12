@@ -26,13 +26,20 @@ RUN apt-get install bash
 # RUN echo "extension=swoole.so" >> /usr/local/etc/php/php.ini
 
 # 安装 soap 扩展
-# RUN docker-php-ext-install soap
+RUN apt-get update && apt-get install -y \
+    libxml2-dev \
+    && rm -rf /var/lib/apt/lists/*
+RUN docker-php-ext-install soap
 
 # 安装 zip 扩展
 # RUN apt-get install zip unzip
 # RUN docker-php-ext-install fileinfo
 
+RUN docker-php-ext-install opcache  # 安装OPcache扩展[6,7](@ref)
 
+
+# 安装 ps 命令
+RUN apt install procps
 
 # 复制应用程序代码到工作目录
 # COPY . /var/www/html
